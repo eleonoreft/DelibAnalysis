@@ -1,2 +1,2 @@
 # DelibAnalysis
-Project analyzing online engagement for the US Presidential Elections
+Project Discourse Quality for political deliberations online.
