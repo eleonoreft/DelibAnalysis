@@ -8,7 +8,7 @@ Details of configuration in delib_ana.ini
 
 
 ## Contact
-eleonore.fournier-tombs@mail.mcgill.ca
+If you are using this, we want to hear from you! Please contact us at: eleonore.fournier-tombs@mail.mcgill.ca
 
 
 ## Motivation
