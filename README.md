@@ -1,6 +1,11 @@
-# DelibAnalysis
-The following code samples are part of my doctoral work at the University of Geneva for my thesis entitled DelibAnalysis: understanding online deliberation through automated discourse quality analysis and topic modelling.
+# DelibAnalysis version 2.0
+This version was developed jointly by Eleonore Fournier-Tombs and Curtis Hendricks. This version is fully controlled by the config file, which means that it requires no modification of the Python files. It is run in the command line and is fully commented using Pydoc.
 
-The full thesis accompanying this code will be shared here as soon as it is made public.
 
-For any questions, please contact me at eleonore.fournier-tombs@mail.mcgill.ca.
+## Please respect the Copyright
+Copyright: Attribution-NonCommercial-ShareAlike CC BY-NC-SA
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+Contact: eleonore.fournier-tombs@mail.mcgill.ca
+
+
+DelibAnalysis was originally developed by Eleonore Fournier-Tombs as part of her doctoral thesis at the University of Geneva. 
