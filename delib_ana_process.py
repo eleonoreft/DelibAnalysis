@@ -269,8 +269,8 @@ def dir_predict_process(dir_path, indic, file_name, file_type,
                 new_data = predict_process(pth, indic, file_type,
                                            file_name)
                 if tag:
-                    result_fname = dir_path + output_dir + tag + '-' + 'res_'
-                    + a_file.name
+                    result_fname = dir_path + output_dir + tag + '-' + \
+                        'res_' + a_file.name
                 else:
                     result_fname = dir_path + output_dir + 'res_' + a_file.name
                 new_data.to_csv(result_fname)
