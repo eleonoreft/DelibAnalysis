@@ -270,14 +270,15 @@ def dir_predict_process(dir_path, indic, file_name, file_type,
                                            file_name)
                 if tag:
                     result_fname = dir_path + output_dir + tag + '-' + \
-                        'res_' + a_file.name
+                        indic + '_' + a_file.name
                 else:
-                    result_fname = dir_path + output_dir + 'res_' + a_file.name
+                    result_fname = dir_path + output_dir + indic + '_' \
+                        + a_file.name
                 new_data.to_csv(result_fname)
                 if master:
                     master_df = master_df.append(new_data)
         if verbose:
-            print('Result files saved in:', dir_path + output_dir)
+            print('Outputs are saved in:', dir_path + output_dir)
 
     if master:
         return master_df
