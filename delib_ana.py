@@ -121,8 +121,6 @@ def run_process(config_obj):
                                        file_name, file_type)
         param_dict = utils.add_to_dict(tag=active_tag)
         process.dir_predict_process(*param_list, **param_dict)
-        # TODO: check if I need to output anything here
-        # running list of files to output
     elif ana_process == 'test':
         param_list = utils.add_to_list(loc_labelled_train, active_indicator,
                                        indicator_vocab, active_tag)
