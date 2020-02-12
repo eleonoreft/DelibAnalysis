@@ -25,7 +25,7 @@ from delib_ana_utils import curr_dte_txt
 
 
 def pickling(model, vectorizer, indic, train_data=None, tag='', name='',
-             verbose=False):
+             verbose=True):
     """Store the model using Python's Pickle module.
 
     'Pickle' the model and vectorizer, and optionally training data, and stores
@@ -42,7 +42,7 @@ def pickling(model, vectorizer, indic, train_data=None, tag='', name='',
         train_data {DataFrame} -- training data used to create vectorizers and
             model. (default: {None})
         name {str} -- prefix to be used for file name. (default: {''})
-        verbose {bool} -- print process messages. (default: {False})
+        verbose {bool} -- print process messages. (default: {True})
     """
 
     suffix = '-' + indic + '_pickle_model.pkl'
@@ -66,7 +66,7 @@ def pickling(model, vectorizer, indic, train_data=None, tag='', name='',
             print('Training data pickled in file,', outfile, '.')
 
 
-def unpickle(pkl_file, verbose=False):
+def unpickle(pkl_file, verbose=True):
     """Retrieves model saved using Python's Pickle module.
 
     'Unpickles' the model and optionally other data from file storage and
@@ -76,7 +76,7 @@ def unpickle(pkl_file, verbose=False):
         pkl_file {str} -- name of the pickle file with the stored object.
 
     Keyword Arguments:
-        verbose {bool} -- print process messages. (default: {False})
+        verbose {bool} -- print process messages. (default: {True})
 
     Returns:
         [tuple] -- three item tuple containg the model object, vectorizers and
@@ -98,7 +98,7 @@ def unpickle(pkl_file, verbose=False):
 
 
 def joblib_store(model, vectorizer, indic, train_data=None, tag='', name='',
-                 verbose=False):
+                 verbose=True):
     """Store the model using Sci-Kit Learn's JobLib module.
 
     Stores the model and vectorizers, and optionally the  training data, in the
@@ -138,7 +138,7 @@ def joblib_store(model, vectorizer, indic, train_data=None, tag='', name='',
             print('Training data added to file', outfile, '.')
 
 
-def joblib_retrieve(job_file, verbose=False):
+def joblib_retrieve(job_file, verbose=True):
     """Retrieves model stored using Sci-kit Learn's Joblib module.
 
     Unpacks the model and optionally other data from file storage and
@@ -148,7 +148,7 @@ def joblib_retrieve(job_file, verbose=False):
         job_file {string} -- name of the joblib file with the stored object.
 
     Keyword Arguments:
-        verbose {bool} -- print process messages. (default: {False})
+        verbose {bool} -- print process messages. (default: {True})
 
     Returns:
         [tuple] -- three item tuple containg the model object, vectorizers and

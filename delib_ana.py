@@ -89,15 +89,18 @@ def run_process(config_obj):
         param_list = utils.add_to_list(loc_unlabelled, active_indicator,
                                        file_type, file_name)
         new_label_dataset = process.predict_process(*param_list)
-        # TODO: results to file
-        print(new_label_dataset)
+        f_name = loc_unlabelled.split('/')[-1:][0]
+        outfile_name = active_tag + '-' + active_indicator
+        outfile_name += f_name
+        new_label_dataset.to_csv(outfile_name)
+        print("Predict process result saved to file:", outfile_name)
+        print(new_label_dataset.head(10))
     elif ana_process == 'generate':
         param_list = utils.add_to_list(loc_labelled_train, active_indicator,
                                        indicator_vocab)
         param_dict = utils.add_to_dict(tag=active_tag, store_name=file_name,
                                        store_type=file_type)
         process.generate_process(*param_list, **param_dict)
-        # TODO: ensure new file name is printed
     elif ana_process == 'generate_predict':
         param_list = utils.add_to_list(loc_labelled_train, loc_unlabelled,
                                        active_indicator, indicator_vocab,
@@ -107,15 +110,17 @@ def run_process(config_obj):
                                        train_split=train_split, r_state=r_seed)
         new_label_dataset = process.gen_predict_process(*param_list,
                                                         **param_dict)
-        # TODO: results to file
-        print(new_label_dataset)
+        f_name = loc_unlabelled.split('/')[-1:][0]
+        outfile_name = active_tag + '-' + active_indicator
+        outfile_name += f_name
+        new_label_dataset.to_csv(outfile_name)
+        print("Generate-Predict process result saved to file:", outfile_name)
+        print(new_label_dataset.head(10))
     elif ana_process == 'batch_predict':
         param_list = utils.add_to_list(loc_dir_unlabelled, active_indicator,
                                        file_name, file_type)
         param_dict = utils.add_to_dict(tag=active_tag)
         process.dir_predict_process(*param_list, **param_dict)
-        # TODO: check if I need to output anything here
-        # running list of files to output
     elif ana_process == 'test':
         param_list = utils.add_to_list(loc_labelled_train, active_indicator,
                                        indicator_vocab, active_tag)
