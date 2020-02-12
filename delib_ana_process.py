@@ -59,9 +59,6 @@ def predict_process(input_unlabelled, indic, model_file_type, model_file_name,
     if model_file_type == 'pickle':
         model, vecs, _ = storage.unpickle(model_file_name, verbose=True)
 
-    if verbose:
-        print('Model retrieved from', model_file_name, '.')
-
     return forest.f_class_predict(unlabelled_data, indic, vecs['vec_combo'],
                                   model)
 
@@ -102,7 +99,7 @@ def generate_process(input_label_data, indic, vocab, tag='', store_name='',
     forest_classifier = forest.f_class_train(indicator_features, train, indic)
 
     if verbose:
-        print('Classifier on', indic, 'created.')
+        print('Classifier on %s created.' % indic)
 
     store_model(store_type, store_name, forest_classifier, vecs, indic, tag,
                 verbose)
@@ -147,7 +144,7 @@ def gen_predict_process(input_label_data, input_unlabelled, indic, vocab, tag,
     forest_classifier = forest.f_class_train(indicator_features, train, indic)
 
     if verbose:
-        print('Classifier on', indic, 'created.')
+        print('Classifier on %s created.' % indic)
 
     if store:
         store_model(store_type, store_name, forest_classifier, vecs, indic,
@@ -211,18 +208,18 @@ def testing_process(input_label_data, indic, vocab, tag, store_name='',
                                            vecs['vec_combo'], 1000)
 
     top_parameters.to_csv(feat_out)
-    print('Parameter priority list file created:', feat_out)
+    print('Parameter priority list file created: %s' % feat_out)
 
     print(top_parameters.head(n=20))
     output = forest.f_class_predict_compare(test, vecs['vec_combo'],
                                             forest_classifier, indic)
     output.to_csv(loc_labelled)
-    print('Labelled comparisons file created:', loc_labelled)
+    print('Labelled comparisons file created: %s' % loc_labelled)
 
     output_str = forest.str_class_report(indic, output)
     with open(report_out, 'w') as f_out:
         f_out.write(output_str)
-    print('Testing report file created:', report_out)
+    print('Testing report file created: %s' % report_out)
 
     utils.tst_print("Output string", output_str)
 
@@ -260,25 +257,43 @@ def dir_predict_process(dir_path, indic, file_name, file_type,
 
     if master:
         master_df = forest.pd.DataFrame()
+    if file_type == 'joblib':
+        model, vecs, _ = storage.joblib_retrieve(file_name, verbose=True)
+    if file_type == 'pickle':
+        model, vecs, _ = storage.unpickle(file_name, verbose=True)
+
     with os.scandir(dir_path) as f_it:
+        pth_begin = dir_path + output_dir
+        if not os.path.exists(pth_begin):
+            try:
+                os.mkdir(pth_begin)
+            except OSError:
+                print("Error creating directory \"%s.\"" % pth_begin)
+            else:
+                print("Directory \"%s\" created." % pth_begin)
+
         for a_file in f_it:
             if a_file.name.endswith('.csv') and a_file.is_file():
                 pth = dir_path + a_file.name
                 if verbose:
-                    print('Processing:', pth + '....')
-                new_data = predict_process(pth, indic, file_type,
-                                           file_name)
+                    print('Processing: %s ...' % pth)
+
+                unlabelled_data = utils.import_unlabelled_data(pth)
+                new_data = forest.f_class_predict(unlabelled_data, indic,
+                                                  vecs['vec_combo'], model)
+
+                pth_end = indic + '_' + a_file.name
                 if tag:
-                    result_fname = dir_path + output_dir + tag + '-' + \
-                        indic + '_' + a_file.name
+                    result_fname = pth_begin + tag + '-' + pth_end
                 else:
-                    result_fname = dir_path + output_dir + indic + '_' \
-                        + a_file.name
+                    result_fname = pth_begin + pth_end
                 new_data.to_csv(result_fname)
+
                 if master:
                     master_df = master_df.append(new_data)
+
         if verbose:
-            print('Outputs are saved in:', dir_path + output_dir)
+            print('Output files are saved in: %s' % (pth_begin))
 
     if master:
         return master_df
