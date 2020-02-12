@@ -55,9 +55,9 @@ def predict_process(input_unlabelled, indic, model_file_type, model_file_name,
     unlabelled_data = utils.import_unlabelled_data(input_unlabelled)
 
     if model_file_type == 'joblib':
-        model, vecs, _ = storage.joblib_retrieve(model_file_name, verbose=True)
+        model, vecs, _ = storage.joblib_retrieve(model_file_name)
     if model_file_type == 'pickle':
-        model, vecs, _ = storage.unpickle(model_file_name, verbose=True)
+        model, vecs, _ = storage.unpickle(model_file_name)
 
     return forest.f_class_predict(unlabelled_data, indic, vecs['vec_combo'],
                                   model)
@@ -258,9 +258,9 @@ def dir_predict_process(dir_path, indic, file_name, file_type,
     if master:
         master_df = forest.pd.DataFrame()
     if file_type == 'joblib':
-        model, vecs, _ = storage.joblib_retrieve(file_name, verbose=True)
+        model, vecs, _ = storage.joblib_retrieve(file_name)
     if file_type == 'pickle':
-        model, vecs, _ = storage.unpickle(file_name, verbose=True)
+        model, vecs, _ = storage.unpickle(file_name)
 
     with os.scandir(dir_path) as f_it:
         pth_begin = dir_path + output_dir
