@@ -16,6 +16,7 @@ Contact: eleonore.fournier-tombs@mail.mcgill.ca
 import pandas as pd
 import numpy as np
 import re
+import os
 
 from datetime import date, datetime
 from nltk import word_tokenize, pos_tag
@@ -360,3 +361,22 @@ def add_to_dict(**items):
         if items[key] is not None:
             dct[key] = items[key]
     return dct
+
+
+def create_directory(pth):
+    if not os.path.exists(pth):
+        try:
+            os.mkdir(pth)
+        except OSError:
+            print("Error creating directory \"%s.\"" % pth)
+            return False
+        else:
+            print("Directory \"%s\" created." % pth)
+    else:
+        print("Path (%s) already exists.")
+
+    return True
+
+
+def dir_iter(pth):
+    return os.scandir(pth)
