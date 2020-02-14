@@ -373,7 +373,7 @@ def create_directory(pth):
         else:
             print("Directory \"%s\" created." % pth)
     else:
-        print("Path (%s) already exists.")
+        print("Path (%s) already exists." % pth)
 
     return True
 

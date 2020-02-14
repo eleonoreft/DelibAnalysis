@@ -23,7 +23,6 @@ Contact: eleonore.fournier-tombs@mail.mcgill.ca
 import delib_ana_utils as utils
 import delib_ana_forest as forest
 import delib_ana_modelstore as storage
-import os
 
 from sklearn.model_selection import train_test_split
 
@@ -262,36 +261,32 @@ def dir_predict_process(dir_path, indic, file_name, file_type,
     if file_type == 'pickle':
         model, vecs, _ = storage.unpickle(file_name)
 
-    with os.scandir(dir_path) as f_it:
+    f_it = utils.dir_iter(dir_path)
+    with f_it:
         pth_begin = dir_path + output_dir
-        if not os.path.exists(pth_begin):
-            try:
-                os.mkdir(pth_begin)
-            except OSError:
-                print("Error creating directory \"%s.\"" % pth_begin)
-            else:
-                print("Directory \"%s\" created." % pth_begin)
+        if utils.create_directory(pth_begin):
+            for a_file in f_it:
+                if a_file.name.endswith('.csv') and a_file.is_file():
+                    pth = dir_path + a_file.name
+                    if verbose:
+                        print('Processing: %s ...' % pth)
 
-        for a_file in f_it:
-            if a_file.name.endswith('.csv') and a_file.is_file():
-                pth = dir_path + a_file.name
-                if verbose:
-                    print('Processing: %s ...' % pth)
+                    unlabelled_data = utils.import_unlabelled_data(pth)
+                    new_data = forest.f_class_predict(unlabelled_data, indic,
+                                                      vecs['vec_combo'], model)
 
-                unlabelled_data = utils.import_unlabelled_data(pth)
-                new_data = forest.f_class_predict(unlabelled_data, indic,
-                                                  vecs['vec_combo'], model)
+                    pth_end = indic + '_' + a_file.name
+                    if tag:
+                        result_fname = pth_begin + tag + '-' + pth_end
+                    else:
+                        result_fname = pth_begin + pth_end
+                    new_data.to_csv(result_fname)
 
-                pth_end = indic + '_' + a_file.name
-                if tag:
-                    result_fname = pth_begin + tag + '-' + pth_end
-                else:
-                    result_fname = pth_begin + pth_end
-                new_data.to_csv(result_fname)
-
-                if master:
-                    master_df = master_df.append(new_data)
-
+                    if master:
+                        master_df = master_df.append(new_data)
+        else:
+            print('ERROR: Error creating output directory. Exiting process.')
+            return None
         if verbose:
             print('Output files are saved in: %s' % (pth_begin))
 
