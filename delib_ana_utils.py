@@ -24,7 +24,8 @@ from nltk import word_tokenize, pos_tag
 # List of indicators that classifier can be trained on
 INDICATORS = [
     'narrative', 'question', 'response', 'advocacy', 'public_interest',
-    'respect'
+    'respect', 'explanation', 'causal_reasoning', 'narrative', 'advocacy',
+    'counterarguments', 'constructive_proposal'
 ]
 
 # Dictionary of character ranges
